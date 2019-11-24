@@ -1,4 +1,5 @@
 import database.Bootstrap;
+import database.DBCon;
 import database.PuenteDB;
 import spark.Spark;
 
@@ -11,7 +12,7 @@ public static void main(String[] args) throws SQLException, NoSuchAlgorithmExcep
             Spark.staticFileLocation("/public");
             Bootstrap.startDb();
             Bootstrap.createTables();
-            PuenteDB.getInstance().testConnection();
+            DBCon.getInstance().testConnection();
             Filters.applyFilters();
             Routes.rutas();
         }

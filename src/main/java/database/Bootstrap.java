@@ -1,6 +1,6 @@
 package database;
 
-import clases.Usuario;
+import models.Usuario;
 import org.h2.tools.Server;
 
 import java.nio.charset.StandardCharsets;
@@ -47,7 +47,7 @@ public class Bootstrap{
                 "SISTEMA_OP VARCHAR2 NOT NULL," +
                 "NAVEGADOR VARCHAR2 NOT NULL," +
                 "FECHA TIMESTAMP NOT NULL,"+
-                "IPV4ADDR VARCHAR(16),"
+                "IPV4ADDR VARCHAR(16)"+
                 ");";
 
         Connection con = DBCon.getInstance().getConnection();
@@ -59,13 +59,7 @@ public class Bootstrap{
         statement.close();
         MessageDigest md   = MessageDigest.getInstance("SHA-224");
         byte[] hashPassEnt = md.digest("toor".getBytes(StandardCharsets.UTF_8));
-        if(PuenteUser.getInstance().crearUsuario(new Usuario(0,"root","admin",hashPassEnt,true,true))){
-            System.out.println("Tables created!!");
-        }else{
-            System.out.println("DB ERROR");
-        }
-
-
+        new CrudGenerico<Usuario>(Usuario.class).crear(new Usuario("root","admin",hashPassEnt,true));
         con.close();
     }
 }
