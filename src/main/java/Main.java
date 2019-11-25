@@ -11,7 +11,7 @@ public static void main(String[] args) throws SQLException, NoSuchAlgorithmExcep
             Spark.staticFileLocation("/public");
             Bootstrap.startDb();
             //Bootstrap.createTables();
-            DBCon.getInstance().testConnection();
+            //DBCon.getInstance().testConnection();
             //Filters.applyFilters();
             Routes.rutas();
         }

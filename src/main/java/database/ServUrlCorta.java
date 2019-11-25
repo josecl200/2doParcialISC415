@@ -25,4 +25,10 @@ public class ServUrlCorta extends CrudGenerico<UrlCorta> {
         return stats.getResultList();
     }
 
+    public List<UrlCorta> getAllUrls(){
+        EntityManager em = getEntityManager();
+        Query stats = em.createQuery("SELECT E FROM URL_CORTA E", UrlCorta.class);
+        return stats.getResultList();
+    }
+
 }

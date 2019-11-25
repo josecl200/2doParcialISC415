@@ -10,6 +10,7 @@ import spark.Session;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.sql.Timestamp;
@@ -34,7 +35,8 @@ public class Routes {
         //Spark.get("/urlCortada",(request, response) -> {});
 
         Spark.get("/r/:idUrl",(request, response) -> {
-            Long idUrl = Long.parseLong(Base64.getDecoder().decode(request.params("idUrl").getBytes(StandardCharsets.UTF_8)).toString());
+            ByteBuffer byteId = ByteBuffer.wrap(Base64.getDecoder().decode(request.params("idUrl")));
+            long idUrl = byteId.getLong();
             String userAgent = request.userAgent();
             String user = userAgent.toLowerCase();
             String os="unknown";
@@ -87,15 +89,11 @@ public class Routes {
 
             return null;
         });
-        /*Spark.get("/stats/:idUrl",(request, response) -> {
+        //Spark.get("/stats/:idUrl",(request, response) -> {
 
-        });
-        Spark.get("/login",(request, response) -> {
-
-        });
-        Spark.get("/register",(request, response) -> {
-
-        });*/
+        //});
+        Spark.get("/login",(request, response) -> new FreeMarkerEngine().render(new ModelAndView(null, "login.fml")));
+        Spark.get("/register",(request, response) -> new FreeMarkerEngine().render(new ModelAndView(null, "register.fml")));
         Spark.post("/login",(request, response) -> {
             String username = request.queryParams("usuario");
             String password = request.queryParams("contrasena");
@@ -139,20 +137,38 @@ public class Routes {
         });
         Spark.get("/users",(request, response) -> {
             Map<String,Object> atributos = new HashMap<>();
-            atributos.put("mensaje", "algo salió mal, intentelo de nuevo");
+            atributos.put("users", ServUsuario.getInstance().listarUsuario() );
             return new FreeMarkerEngine().render(new ModelAndView(atributos,"users.fml"));
         });
-        /*Spark.post("/adminRights",(request, response) -> {
-
+        Spark.post("/adminRights/:idUser",(request, response) -> {
+            Usuario user = ServUsuario.getInstance().getUser(Long.parseLong(request.params("idUser")));
+            user.setAdmin(true);
+            ServUsuario.getInstance().editar(user);
+            response.redirect("/users", 307);
+            return null;
         });
+
         Spark.get("/myUrls",(request, response) -> {
-
+            Map<String,Object> atributos = new HashMap<>();
+            Usuario u = request.session().attribute("usuario");
+            atributos.put("urls", ServUrlCorta.getInstance().getURLsByUser(u.getId()));
+            return new FreeMarkerEngine().render(new ModelAndView(atributos,"urls.fml"));
         });
+
         Spark.get("/allUrls",(request, response) -> {
-
+            Map<String,Object> atributos = new HashMap<>();
+            atributos.put("urls", ServUrlCorta.getInstance().getAllUrls());
+            return new FreeMarkerEngine().render(new ModelAndView(atributos,"urls.fml"));
         });
-        Spark.delete("/delUrl",(request, response) -> {
 
-        });*/
+
+        Spark.delete("/delUrl/:idUrl",(request, response) -> {
+            new CrudGenerico<>(UrlCorta.class).eliminar(Long.parseLong(request.params("idUrl")));
+            if(request.queryParams("user")!=null)
+                response.redirect("/myUrls");
+            else
+                response.redirect("allUrls");
+            return null;
+        });
     }
 }

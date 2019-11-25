@@ -6,7 +6,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
-@Table(name = "URL_CORTA")
 public class UrlCorta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id @GeneratedValue

@@ -54,9 +54,7 @@ public class ServUsuario extends CrudGenerico<Usuario> {
         if(user!=null)
             if(Arrays.equals(user.getPassword(),hashPassEnt))
                 login=true;
-
         return login;
     }
-
 
 }
