@@ -1,18 +1,28 @@
 package database;
 
-import models.Usuario;
+import models.UrlCorta;
 
-public class ServUrlCorta extends CrudGenerico<Usuario> {
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.List;
+
+public class ServUrlCorta extends CrudGenerico<UrlCorta> {
 
     private ServUrlCorta() {
-        super(Usuario.class);
+        super(UrlCorta.class);
     }
     private static ServUrlCorta instance;
-    public ServUrlCorta getInstance(){
+    public static ServUrlCorta getInstance(){
         if (instance==null)
             instance = new ServUrlCorta();
         return instance;
     }
 
+    public List<UrlCorta> getURLsByUser(long idUser){
+        EntityManager em = getEntityManager();
+        Query stats = em.createQuery("SELECT E FROM URL_CORTA E WHERE E.CREADOR = :IDUSER", UrlCorta.class);
+        stats.setParameter("IDUSER", idUser);
+        return stats.getResultList();
+    }
 
 }

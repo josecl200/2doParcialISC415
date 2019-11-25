@@ -3,6 +3,7 @@ package models;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 public class Estadisticas implements Serializable {
@@ -11,17 +12,17 @@ public class Estadisticas implements Serializable {
     @Id @GeneratedValue
     private long id;
     @ManyToOne
-    private Url_Corta url_corta;
+    private UrlCorta url_corta;
     private String sistema_op;
     private String navegador;
-    private Timestamp fecha;
+    private Date fecha;
     @Column(name = "IPV4ADDR")
     private String ip;
 
     public Estadisticas() {
     }
 
-    public Estadisticas(Url_Corta url_corta, String sistema_op, String navegador, Timestamp fecha, String ip) {
+    public Estadisticas(UrlCorta url_corta, String sistema_op, String navegador, Timestamp fecha, String ip) {
         this.url_corta = url_corta;
         this.sistema_op = sistema_op;
         this.navegador = navegador;
@@ -37,11 +38,11 @@ public class Estadisticas implements Serializable {
         this.id = id;
     }
 
-    public Url_Corta getUrl_corta() {
+    public UrlCorta getUrl_corta() {
         return url_corta;
     }
 
-    public void setUrl_corta(Url_Corta url_corta) {
+    public void setUrl_corta(UrlCorta url_corta) {
         this.url_corta = url_corta;
     }
 
@@ -61,7 +62,7 @@ public class Estadisticas implements Serializable {
         this.navegador = navegador;
     }
 
-    public Timestamp getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 

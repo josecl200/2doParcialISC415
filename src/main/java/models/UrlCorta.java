@@ -3,10 +3,11 @@ package models;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
-public class Url_Corta implements Serializable {
+@Table(name = "URL_CORTA")
+public class UrlCorta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id @GeneratedValue
     private long id;
@@ -18,12 +19,12 @@ public class Url_Corta implements Serializable {
     private String url_orig;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp fecha;
+    private Date fecha;
 
-    public Url_Corta() {
+    public UrlCorta() {
     }
 
-    public Url_Corta(Usuario creador, String url_orig, Timestamp fecha) {
+    public UrlCorta(Usuario creador, String url_orig, Timestamp fecha) {
         this.creador = creador;
         this.url_orig = url_orig;
         this.fecha = fecha;
@@ -53,11 +54,11 @@ public class Url_Corta implements Serializable {
         this.url_orig = url_orig;
     }
 
-    public Timestamp getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(Timestamp fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 }

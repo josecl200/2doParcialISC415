@@ -8,13 +8,13 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Queue;
 
-public class ServEstadistica extends CrudGenerico<Usuario> {
+public class ServEstadistica extends CrudGenerico<Estadisticas> {
 
     private ServEstadistica() {
-        super(Usuario.class);
+        super(Estadisticas.class);
     }
     private static ServEstadistica instance;
-    public ServEstadistica getInstance(){
+    public static ServEstadistica getInstance(){
         if (instance==null)
             instance = new ServEstadistica();
         return instance;

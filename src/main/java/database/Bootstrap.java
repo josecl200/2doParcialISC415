@@ -17,7 +17,7 @@ public class Bootstrap{
     }
 
     public static void stopDb() throws SQLException {
-        Server.shutdownTcpServer("tcp://localhost:9094", "contracts", true, true);
+        Server.shutdownTcpServer("tcp://localhost:9094", "", true, true);
     }
 
     public static void createTables() throws SQLException, NoSuchAlgorithmException {
@@ -35,9 +35,8 @@ public class Bootstrap{
         String urlCortaDB = "CREATE TABLE IF NOT EXISTS URL_CORTA" +
                 "(" +
                 "ID BIGINT PRIMARY KEY NOT NULL," +
-                "CREADOR BIGINT," +
-                "URL_ORIG TEXT NOT NULL," +
                 "CREADOR BIGINT NOT NULL REFERENCES USUARIO(ID)," +
+                "URL_ORIG TEXT NOT NULL," +
                 "FECHA_CREACION TIMESTAMP NOT NULL" +
                 ");";
         String estadisticaDB = "CREATE TABLE IF NOT EXISTS ESTADISTICAS" +

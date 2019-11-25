@@ -30,7 +30,7 @@ public class DBCon {
     public Connection getConnection() {
         Connection con = null;
         try {
-            con = DriverManager.getConnection(URL, "sa", "contracts");
+            con = DriverManager.getConnection(URL, "sa", "");
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
