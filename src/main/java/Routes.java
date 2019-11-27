@@ -10,6 +10,8 @@ import spark.Session;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 
+import ua_parser.Parser;
+import ua_parser.Client;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -29,7 +31,8 @@ public class Routes {
             url.setFecha(new Date());
             url.setUrl_orig(request.queryParams("url"));
             new CrudGenerico<>(UrlCorta.class).crear(url);
-            return null;
+
+            return "http://localhost:8081/r/"+Base64.getEncoder().encodeToString(ByteBuffer.allocate(8).putLong(url.getId()).array());
         });
 
         //Spark.get("/urlCortada",(request, response) -> {});
@@ -37,55 +40,22 @@ public class Routes {
         Spark.get("/r/:idUrl",(request, response) -> {
             ByteBuffer byteId = ByteBuffer.wrap(Base64.getDecoder().decode(request.params("idUrl")));
             long idUrl = byteId.getLong();
-            String userAgent = request.userAgent();
-            String user = userAgent.toLowerCase();
-            String os="unknown";
+            String os = "unknown";
             String browser = "unknown";
-            if (userAgent.toLowerCase().contains("windows")){
-                os = "Windows";
-            } else if(userAgent.toLowerCase().contains("mac")){
-                os = "Mac";
-            } else if(userAgent.toLowerCase().contains("x11")){
-                os = "Unix";
-            } else if(userAgent.toLowerCase().contains("android")){
-                os = "Android";
-            } else if(userAgent.toLowerCase().contains("iphone")){
-                os = "IPhone";
-            }
-            if (user.contains("msie")){
-                String substring=userAgent.substring(userAgent.indexOf("MSIE")).split(";")[0];
-                browser=substring.split(" ")[0].replace("MSIE", "IE")+"-"+substring.split(" ")[1];
-            } else if (user.contains("safari") && user.contains("version")){
-                browser=(userAgent.substring(userAgent.indexOf("Safari")).split(" ")[0]).split("/")[0]+"-"+(userAgent.substring(userAgent.indexOf("Version")).split(" ")[0]).split("/")[1];
-            } else if ( user.contains("opr") || user.contains("opera")){
-                if(user.contains("opera"))
-                    browser=(userAgent.substring(userAgent.indexOf("Opera")).split(" ")[0]).split("/")[0]+"-"+(userAgent.substring(userAgent.indexOf("Version")).split(" ")[0]).split("/")[1];
-                else if(user.contains("opr"))
-                    browser=((userAgent.substring(userAgent.indexOf("OPR")).split(" ")[0]).replace("/", "-")).replace("OPR", "Opera");
-            } else if (user.contains("chrome")){
-                browser=(userAgent.substring(userAgent.indexOf("Chrome")).split(" ")[0]).replace("/", "-");
-            } else if ((user.contains("mozilla/7.0")) || (user.contains("netscape6"))  || (user.contains("mozilla/4.7")) || (user.contains("mozilla/4.78")) || (user.contains("mozilla/4.08")) || (user.contains("mozilla/3")) ){
-                //browser=(userAgent.substring(userAgent.indexOf("MSIE")).split(" ")[0]).replace("/", "-");
-                browser = "Netscape-?";
-            } else if (user.contains("firefox")){
-                browser=(userAgent.substring(userAgent.indexOf("Firefox")).split(" ")[0]).replace("/", "-");
-            } else if(user.contains("rv")){
-                browser="IE-" + user.substring(user.indexOf("rv") + 3, user.indexOf(")"));
-            }
-
+            Parser uaParser = new Parser();
+            Client c = uaParser.parse(request.userAgent());
+            os = c.os.family;
+            browser = c.userAgent.family;
             UrlCorta url = ServUrlCorta.getInstance().encontrar(idUrl);
             Estadisticas est = new Estadisticas();
-            est.setFecha(new Timestamp(System.currentTimeMillis()));
+            est.setFecha(new Date());
             est.setIp(request.ip());
             est.setSistema_op(os);
             est.setNavegador(browser);
             est.setUrl_corta(url);
             ServEstadistica.getInstance().crear(est);
             String redir = url.getUrl_orig();
-            if(redir.contains("http://") || redir.contains("https://"))
-                response.redirect(redir);
-            else
-                response.redirect("http://"+redir);
+            response.redirect(redir);
 
             return null;
         });

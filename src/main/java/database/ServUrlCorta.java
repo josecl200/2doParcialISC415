@@ -20,14 +20,14 @@ public class ServUrlCorta extends CrudGenerico<UrlCorta> {
 
     public List<UrlCorta> getURLsByUser(long idUser){
         EntityManager em = getEntityManager();
-        Query stats = em.createQuery("SELECT E FROM URL_CORTA E WHERE E.CREADOR = :IDUSER", UrlCorta.class);
+        Query stats = em.createQuery("SELECT E FROM UrlCorta E WHERE E.creador = :IDUSER", UrlCorta.class);
         stats.setParameter("IDUSER", idUser);
         return stats.getResultList();
     }
 
     public List<UrlCorta> getAllUrls(){
         EntityManager em = getEntityManager();
-        Query stats = em.createQuery("SELECT E FROM URL_CORTA E", UrlCorta.class);
+        Query stats = em.createQuery("SELECT E FROM UrlCorta E", UrlCorta.class);
         return stats.getResultList();
     }
 

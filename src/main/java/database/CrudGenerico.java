@@ -48,6 +48,8 @@ public class CrudGenerico<T> {
         try {
             if (getValorCampo(entidad) != null && em.find(claseEntidad, getValorCampo(entidad)) == null) {
                 em.persist(entidad);
+                em.flush();
+                em.refresh(entidad);
                 em.getTransaction().commit();
             } else {
                 System.out.println("Ya existe esa entidad.");

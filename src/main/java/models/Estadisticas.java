@@ -66,7 +66,7 @@ public class Estadisticas implements Serializable {
         return fecha;
     }
 
-    public void setFecha(Timestamp fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

@@ -24,23 +24,23 @@ public class ServUsuario extends CrudGenerico<Usuario> {
 
     public List<Usuario> listarUsuario() {
         EntityManager em = getEntityManager();
-        Query cuero = em.createQuery("SELECT U FROM USUARIO U");
+        Query cuero = em.createQuery("SELECT U FROM Usuario U");
         return (List<Usuario>) cuero.getResultList();
     }
 
     public Usuario getUser(Long id) {
         Usuario user = null;
         EntityManager em = getEntityManager();
-        Query cuero = em.createQuery("SELECT U FROM USUARIO U WHERE U.ID = :ID");
-        cuero.setParameter("ID", id);
-        user = (Usuario) cuero.getResultList().get(0);
+        Query cuero = em.createQuery("SELECT U FROM Usuario U WHERE U.id = :ID", Usuario.class);
+        if(cuero.setParameter("ID", id).getResultList().size()>0)
+            user = (Usuario) cuero.setParameter("ID", id).getResultList().get(0);
         return user;
     }
 
     public Usuario getUser(String username) {
         Usuario user = null;
         EntityManager em = getEntityManager();
-        Query cuero = em.createQuery("SELECT U FROM USUARIO U WHERE U.USERNAME = :USERNAME");
+        Query cuero = em.createQuery("SELECT U FROM Usuario U WHERE U.username = :USERNAME");
         cuero.setParameter("USERNAME", username);
         user = (Usuario) cuero.getResultList().get(0);
         return user;
