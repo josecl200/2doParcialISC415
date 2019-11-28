@@ -128,13 +128,6 @@
         </div>
 
     </ul>
-<!-- Main Content -->
-<div id="shortLinks">
-    <form method="post" action="/acortar" name="acortar" id="acortar">
-        <input type="url" name="url" id="url" />
-        <input type="submit" />
-    </form>
-</div>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -221,6 +214,14 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
+
+                <!-- Main Content -->
+                <div id="shortLinks">
+                    <form method="post" action="/acortar" name="acortar" id="acortar">
+                        <input type="url" name="url" id="url" />
+                        <input type="submit" />
+                    </form>
+                </div>
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
