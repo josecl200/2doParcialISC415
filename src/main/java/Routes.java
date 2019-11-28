@@ -16,10 +16,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.sql.Timestamp;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Routes {
     public static void rutas(){
@@ -31,11 +28,18 @@ public class Routes {
             url.setFecha(new Date());
             url.setUrl_orig(request.queryParams("url"));
             new CrudGenerico<>(UrlCorta.class).crear(url);
+            if (url.getCreador()==null){
+                List<UrlCorta> tempUrls = (List<UrlCorta>) request.session().attribute("tempUrls");
+                if(tempUrls==null)
+                    tempUrls=new ArrayList<UrlCorta>();
+                tempUrls.add(url);
+                request.session().attribute("tempUrls",tempUrls);
+
+            }
+
 
             return "http://localhost:8081/r/"+Base64.getEncoder().encodeToString(ByteBuffer.allocate(8).putLong(url.getId()).array());
         });
-
-        //Spark.get("/urlCortada",(request, response) -> {});
 
         Spark.get("/r/:idUrl",(request, response) -> {
             ByteBuffer byteId = ByteBuffer.wrap(Base64.getDecoder().decode(request.params("idUrl")));
@@ -56,12 +60,19 @@ public class Routes {
             ServEstadistica.getInstance().crear(est);
             String redir = url.getUrl_orig();
             response.redirect(redir);
-
             return null;
         });
-        //Spark.get("/stats/:idUrl",(request, response) -> {
 
-        //});
+        Spark.get("/stats/:idUrl",(request, response) -> {
+            ByteBuffer byteId = ByteBuffer.wrap(Base64.getDecoder().decode(request.params("idUrl")));
+            long idUrl = byteId.getLong();
+            List<Estadisticas> stats = ServEstadistica.getInstance().getStatsForURL(idUrl);
+            UrlCorta url = ServUrlCorta.getInstance().encontrar(idUrl);
+            Map<String,Object> atributos = new HashMap<>();
+            atributos.put("stats", stats);
+            return new FreeMarkerEngine().render(new ModelAndView(atributos,"stats.fml"));
+        });
+
         Spark.get("/login",(request, response) -> new FreeMarkerEngine().render(new ModelAndView(null, "login.fml")));
         Spark.get("/register",(request, response) -> new FreeMarkerEngine().render(new ModelAndView(null, "register.fml")));
         Spark.post("/login",(request, response) -> {
@@ -86,16 +97,22 @@ public class Routes {
             }
             return null;
         });
-        Spark.put("/register",(request, response) -> {
-            String username = request.queryParams("usuario");
-            String password = request.queryParams("contrasena");
-            String nombre   = request.queryParams("nombre");
-            boolean admin = false;
+        Spark.post("/register",(request, response) -> {
+            String username    = request.queryParams("usuario");
+            String password    = request.queryParams("contrasena");
+            String nombre      = request.queryParams("nombre");
             MessageDigest md   = MessageDigest.getInstance("SHA-224");
             byte[] hashPassEnt = md.digest(password.getBytes(StandardCharsets.UTF_8));
-            Usuario newUser = new Usuario(username,nombre,hashPassEnt,admin);
+            Usuario newUser    = new Usuario(username,nombre,hashPassEnt, false);
+            List<UrlCorta> tempUrls = request.session().attribute("tempUrls");
             try{
                 new CrudGenerico<Usuario>(Usuario.class).crear(newUser);
+                if(tempUrls!=null){
+                    for (UrlCorta u: tempUrls) {
+                        u.setCreador(newUser);
+                        new CrudGenerico<>(UrlCorta.class).editar(u);
+                    }
+                }
                 Map<String,Object> atributos = new HashMap<>();
                 atributos.put("mensaje", "Registrado con exito, proceda a autenticarse");
                 return new FreeMarkerEngine().render(new ModelAndView(atributos,"login.fml"));
@@ -105,11 +122,13 @@ public class Routes {
                 return new FreeMarkerEngine().render(new ModelAndView(atributos,"register.fml"));
             }
         });
+
         Spark.get("/users",(request, response) -> {
             Map<String,Object> atributos = new HashMap<>();
             atributos.put("users", ServUsuario.getInstance().listarUsuario() );
             return new FreeMarkerEngine().render(new ModelAndView(atributos,"users.fml"));
         });
+
         Spark.post("/adminRights/:idUser",(request, response) -> {
             Usuario user = ServUsuario.getInstance().getUser(Long.parseLong(request.params("idUser")));
             user.setAdmin(true);

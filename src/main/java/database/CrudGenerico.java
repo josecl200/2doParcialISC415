@@ -1,12 +1,10 @@
 package database;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Id;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaQuery;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class CrudGenerico<T> {
 
@@ -118,5 +116,6 @@ public class CrudGenerico<T> {
             em.close();
         }
     }
+
 
 }

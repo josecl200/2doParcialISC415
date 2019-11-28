@@ -1,7 +1,14 @@
+import database.CrudGenerico;
+import database.ServUrlCorta;
 import database.ServUsuario;
+import models.UrlCorta;
 import models.Usuario;
 import spark.Session;
 import spark.Spark;
+
+import java.nio.ByteBuffer;
+import java.util.Base64;
+import java.util.List;
 
 public class Filters {
     public static void applyFilters(){
@@ -26,16 +33,28 @@ public class Filters {
         Spark.before("/myUrls/*", (request, response) -> {
             Usuario user = request.session().attribute("usuario");
             if(user==null)
-                Spark.halt(401,"<h1>Usted no está autenticado en el servidor</h1>");
+                if(request.session().attribute("tempUrls")==null)
+                    Spark.halt(401,"<h1>Usted no está autenticado en el servidor</h1>");
         });
-        Spark.before("/url/:idUrl", (request, response) -> {
+        Spark.before("/stats/:idUrl", (request, response) -> {
             System.out.println(request.params("idUrl"));
+            ByteBuffer byteId = ByteBuffer.wrap(Base64.getDecoder().decode(request.params("idUrl")));
+            long idUrl = byteId.getLong();
             Usuario user = request.session().attribute("usuario");
             if(user!=null) {
                 if (!user.isAdmin())
-                    Spark.halt(403, "<h1>Su usuario no tiene los privilegios necesariospara esta operacion</h1>");
+                    Spark.halt(403, "<h1>Su usuario no tiene los privilegios necesarios para esta operacion</h1>");
             }else{
-                Spark.halt(401,"<h1>Usted no está autenticado en el servidor</h1>");
+                List<UrlCorta> tempUrls = request.session().attribute("tempUrls");
+                if(tempUrls!=null){
+                    UrlCorta url = new CrudGenerico<>(UrlCorta.class).encontrar(idUrl);
+                    if(!tempUrls.contains(url))
+                        Spark.halt(401,"<h1>Usted no está autenticado en el servidor</h1>");
+                }else{
+                    Spark.halt(401,"<h1>Usted no está autenticado en el servidor</h1>");
+                }
+
+
             }
         });
     }

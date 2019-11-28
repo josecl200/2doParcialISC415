@@ -6,12 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Short PP v0.1</title>
-
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
@@ -33,7 +30,7 @@
             data: url,
             success: function(html) {
                 var newlink = $("#newlink");
-                optUrl = html.replace("/r/","/url/");
+                optUrl = html.replace("/r/","/stats/");
                 var infoLink="<h6>Su nuevo link es <a href='"+html+"'>"+
                     html+
                     "</a></h6>"+
@@ -44,8 +41,8 @@
                     +"<br><br>"
                     +"<div id=\"qrcode\" name=\"qrcode\" style='margin-left: 50px'>"
                     +"</div>"+
-                "<script type=\"text/javascript\">\n" +
-                    "    new QRCode(document.getElementById(\"qrcode\"), optUrl);\n" +
+                    "<script type=\"text/javascript\">\n" +
+                    "   new QRCode(document.getElementById(\"qrcode\"), optUrl);\n" +
                     "</"+"script>";
                 newlink.append(infoLink);
             }
@@ -108,10 +105,10 @@
 
 <!-- Main Content -->
 <div id="shortLinks">
-<form method="post" action="/acortar" name="acortar" id="acortar">
-    <input type="url" name="url" id="url" />
-    <input type="submit" />
-</form>
+    <form method="post" action="/acortar" name="acortar" id="acortar">
+        <input type="url" name="url" id="url" />
+        <input type="submit" />
+    </form>
 </div>
 
 <div id="newlink">

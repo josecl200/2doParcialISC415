@@ -41,9 +41,22 @@ public class ServUsuario extends CrudGenerico<Usuario> {
         Usuario user = null;
         EntityManager em = getEntityManager();
         Query cuero = em.createQuery("SELECT U FROM Usuario U WHERE U.username = :USERNAME");
-        cuero.setParameter("USERNAME", username);
-        user = (Usuario) cuero.getResultList().get(0);
+        if(cuero.setParameter("USERNAME", username).getResultList().size()>0)
+            user = (Usuario) cuero.setParameter("USERNAME", username).getResultList().get(0);
         return user;
+    }
+
+    public void createAdmin() throws NoSuchAlgorithmException {
+        Usuario admin=new Usuario();
+        admin.setAdmin(true);
+        admin.setNombre("Administrador");
+        MessageDigest md   = MessageDigest.getInstance("SHA-224");
+        byte[] hashPassEnt = md.digest("admin".getBytes(StandardCharsets.UTF_8));
+        admin.setPassword(hashPassEnt);
+        admin.setUsername("root");
+        if(getUser(admin.getUsername())==null){
+            crear(admin);
+        }
     }
 
     public boolean validateCredentials(String username, String password) throws NoSuchAlgorithmException {
@@ -56,5 +69,7 @@ public class ServUsuario extends CrudGenerico<Usuario> {
                 login=true;
         return login;
     }
+
+
 
 }
