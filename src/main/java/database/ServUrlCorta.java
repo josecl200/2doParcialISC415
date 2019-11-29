@@ -20,8 +20,8 @@ public class ServUrlCorta extends CrudGenerico<UrlCorta> {
 
     public List<UrlCorta> getURLsByUser(long idUser){
         EntityManager em = getEntityManager();
-        Query stats = em.createQuery("SELECT E FROM UrlCorta E WHERE E.creador = :IDUSER", UrlCorta.class);
-        stats.setParameter("IDUSER", idUser);
+        Query stats = em.createQuery("SELECT E FROM UrlCorta E WHERE E.creador = :USER", UrlCorta.class);
+        stats.setParameter("USER", ServUsuario.getInstance().getUser(idUser));
         return stats.getResultList();
     }
 
