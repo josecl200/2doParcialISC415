@@ -42,8 +42,11 @@ public class Filters {
             long idUrl = byteId.getLong();
             Usuario user = request.session().attribute("usuario");
             if(user!=null) {
-                if (!user.isAdmin())
-                    Spark.halt(403, "<h1>Su usuario no tiene los privilegios necesarios para esta operacion</h1>");
+                UrlCorta url = new CrudGenerico<>(UrlCorta.class).encontrar(idUrl);
+                if(url.getCreador()!= null)
+                    if(url.getCreador().getId()!=user.getId())
+                        if (!user.isAdmin())
+                            Spark.halt(403, "<h1>Su usuario no tiene los privilegios necesarios para esta operacion</h1>");
             }else{
                 List<UrlCorta> tempUrls = request.session().attribute("tempUrls");
                 if(tempUrls!=null){
