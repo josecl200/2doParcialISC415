@@ -14,7 +14,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="estadisticas.fml">
+        <a class="nav-link" href="/estadisticas">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Estadisticas</span></a>
     </li>

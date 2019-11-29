@@ -35,14 +35,14 @@
                     "</a></h6>"+
                     "<br>"+
                     "<br>"+
-                    "<h6>Si está registrado y desea revisar las estadisticas de su enlace puede acceder al siguiente link o escanear el siguiente codigo</h6>"
-                    +"<a href='"+optUrl+"'>Estadisticas</a>"
-                    +"<br><br>"
-                    +"<div id=\"qrcode\" name=\"qrcode\" style='margin-left: 50px'>"
+                    "<h6>Si esta registrado y desea revisar las estadisticas de su enlace puede acceder al siguiente link o escanear el siguiente codigo:</h6> <a href='"+optUrl+"'>Estadisticas</a>"
+                    +"<div id=\"qrcode\" name=\"qrcode\" style='margin-right: 50px'>"
                     +"</div>"+
                     "<script type=\"text/javascript\">\n" +
-                    "    new QRCode(document.getElementById(\"qrcode\"), optUrl);\n" +
+                    "    new QRCode(document.getElementById(\"qrcode\"), {text: optUrl, width: 128, height: 128, colorDark :#000000, colorLight :#ffffff, correctLevel : QRCode.CorrectLevel.H});\n" +
                     "</"+"script>";
+
+
                 newlink.append(infoLink);
             }
         });
