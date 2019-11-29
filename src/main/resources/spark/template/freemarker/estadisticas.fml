@@ -50,8 +50,6 @@
                 <!-- Content Row -->
                 <div class="row">
 
-                    <#include "*/cardTest.ftl">
-
                 <!-- Content Row -->
 
                 <div class="row">

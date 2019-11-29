@@ -73,7 +73,14 @@ public class Routes {
             Map<String,Object> atributos = new HashMap<>();
             atributos.put("stats", stats);
             atributos.put("usuario", request.session().attribute("usuario"));
-            return new FreeMarkerEngine().render(new ModelAndView(atributos,"index.fml"));
+            return new FreeMarkerEngine().render(new ModelAndView(atributos,"estadisticas.fml"));
+        });
+
+        Spark.get("/stats",(request, response) -> {
+            Map<String,Object> atributos = new HashMap<>();
+            atributos.put("stats", null);
+            atributos.put("usuario", request.session().attribute("usuario"));
+            return new FreeMarkerEngine().render(new ModelAndView(atributos,"estadisticas.fml"));
         });
 
         Spark.get("/login",(request, response) -> new FreeMarkerEngine().render(new ModelAndView(null, "login.fml")));
