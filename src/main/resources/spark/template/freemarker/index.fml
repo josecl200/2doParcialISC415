@@ -12,7 +12,7 @@
     <title>ShortLinks 2 - Electric boogaloo</title>
 
     <!-- Custom fonts & Styles-->
-    <#include "fonts.ftl">
+    <#include "*/fonts.ftl">
     <!-- Custom fonts & Styles-->
 
 </head>
