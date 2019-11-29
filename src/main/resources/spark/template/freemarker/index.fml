@@ -15,42 +15,11 @@
     <#include "fonts.ftl">
     <!-- Custom fonts & Styles-->
 
-    <script src="js/qrcode.min.js"></script>
 
 </head>
 
 <body id="page-top">
 
-<script>
-    var optUrl;
-    $(document).on('submit', '#acortar', function(e) {
-        var url = "url=" + $("#url").val();
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: url,
-            success: function(html) {
-                var newlink = $("#newlink");
-                optUrl = html.replace("/r/","/stats/");
-                var infoLink="<h6>Su nuevo link es <a href='"+html+"'>"+
-                    html+
-                    "</a></h6>"+
-                    "<br>"+
-                    "<br>"+
-                    "<h6>Si está registrado y desea revisar las estadisticas de su enlace puede acceder al siguiente link o escanear el siguiente codigo</h6>"
-                    +"<a href='"+optUrl+"'>Estadisticas</a>"
-                    +"<br><br>"
-                    +"<div id=\"qrcode\" name=\"qrcode\" style='margin-left: 50px'>"
-                    +"</div>"+
-                    "<script type=\"text/javascript\">\n" +
-                    "    new QRCode(document.getElementById(\"qrcode\"), optUrl);\n" +
-                    "</"+"script>";
-                newlink.append(infoLink);
-            }
-        });
-        e.preventDefault();
-    });
-</script>
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -71,8 +40,6 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-
-
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Generar Link</h1>
@@ -82,23 +49,25 @@
                         <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100" method="post" action="/acortar" name="acortar" id="acortar">
                             <div class="input-group">
                                 <input type="url" name="url" id="url" class="form-control border-0 small" placeholder="Insertar link..." aria-label="Search" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button submit">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
-                                </div>
-
                                 <!-- boton -->
-                                <a href="#" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                    <i class="fas fa-download fa-sm text-white-50"></i> Generar Link</a>
+                                <button type="button submit" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                    <i class="fas fa-download fa-sm text-white-50"></i> Generar Link</button>
                                 <!-- boton -->
-
                             </div>
-
                         </form>
                     </div>
                     <!-- Acortador -->
 
+                </div>
+
+                <!-- Content Row -->
+                <div class="row">
+                    <!-- Content Column -->
+                    <div class="col-lg-6 mb-4">
+                        <div id="newlink" class="newlink" name="newlink">
+
+                        </div>
+                    </div>
                 </div>
 
 
@@ -128,19 +97,7 @@
                 </div>
 
 
-                <!-- Content Row -->
-                <div class="row">
 
-                    <!-- Content Column -->
-                    <div class="col-lg-6 mb-4">
-
-                        <!--Croschenza-->
-                        <p>
-                            shortLinks
-                        </p>
-
-                    </div>
-                </div>
 
             </div>
             <!-- /.container-fluid -->

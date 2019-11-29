@@ -20,7 +20,12 @@ import java.util.*;
 
 public class Routes {
     public static void rutas(){
-        Spark.get("/",(request, response) -> new FreeMarkerEngine().render(new ModelAndView(null,"index.fml")));
+        Spark.get("/",(request, response) -> {
+            Map<String,Object> atributos = new HashMap<>();
+            atributos.put("usuario", request.session().attribute("usuario"));
+            return new FreeMarkerEngine().render(new ModelAndView(atributos,"index.fml"));
+
+        });
 
         Spark.post("/acortar",(request, response) -> {
             UrlCorta url = new UrlCorta();
@@ -34,10 +39,7 @@ public class Routes {
                     tempUrls=new ArrayList<UrlCorta>();
                 tempUrls.add(url);
                 request.session().attribute("tempUrls",tempUrls);
-
             }
-
-
             return "http://localhost:8081/r/"+Base64.getEncoder().encodeToString(ByteBuffer.allocate(8).putLong(url.getId()).array());
         });
 
@@ -70,6 +72,7 @@ public class Routes {
             UrlCorta url = ServUrlCorta.getInstance().encontrar(idUrl);
             Map<String,Object> atributos = new HashMap<>();
             atributos.put("stats", stats);
+            atributos.put("usuario", request.session().attribute("usuario"));
             return new FreeMarkerEngine().render(new ModelAndView(atributos,"stats.fml"));
         });
 
@@ -125,6 +128,7 @@ public class Routes {
 
         Spark.get("/users",(request, response) -> {
             Map<String,Object> atributos = new HashMap<>();
+            atributos.put("usuario", request.session().attribute("usuario"));
             atributos.put("users", ServUsuario.getInstance().listarUsuario() );
             return new FreeMarkerEngine().render(new ModelAndView(atributos,"users.fml"));
         });
@@ -139,6 +143,7 @@ public class Routes {
 
         Spark.get("/myUrls",(request, response) -> {
             Map<String,Object> atributos = new HashMap<>();
+            atributos.put("usuario", request.session().attribute("usuario"));
             Usuario u = request.session().attribute("usuario");
             atributos.put("urls", ServUrlCorta.getInstance().getURLsByUser(u.getId()));
             return new FreeMarkerEngine().render(new ModelAndView(atributos,"urls.fml"));
@@ -146,6 +151,7 @@ public class Routes {
 
         Spark.get("/allUrls",(request, response) -> {
             Map<String,Object> atributos = new HashMap<>();
+            atributos.put("usuario", request.session().attribute("usuario"));
             atributos.put("urls", ServUrlCorta.getInstance().getAllUrls());
             return new FreeMarkerEngine().render(new ModelAndView(atributos,"urls.fml"));
         });
