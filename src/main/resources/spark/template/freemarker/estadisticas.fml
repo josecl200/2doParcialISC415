@@ -49,8 +49,11 @@
 
                 <!-- Content Row -->
                 <div class="row">
+                    <#include "cardTest.ftl">
+                </div>
 
                 <!-- Content Row -->
+                    <#include "charts.ftl">
 
                 <div class="row">
                     <#include "charts.ftl">
@@ -61,9 +64,7 @@
 
                     <!-- Content Column -->
                     <div class="col-lg-6 mb-4">
-
                         <!--Croschenza-->
-
                     </div>
                 </div>
 
