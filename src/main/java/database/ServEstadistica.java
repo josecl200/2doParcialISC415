@@ -53,5 +53,17 @@ public class ServEstadistica extends CrudGenerico<Estadisticas> {
         return osCount;
     }
 
+    public HashMap<String,Long> getActivityPerHour(long idUrl){
+        HashMap<String,Long> osCount = new HashMap<String, Long>();
+        EntityManager em = getEntityManager();
+        Query browsers = em.createQuery("SELECT HOUR(e.fecha), count(e) FROM Estadisticas e WHERE e.url_corta = :URL GROUP BY HOUR(e.fecha)");
+        browsers.setParameter("URL", new CrudGenerico<>(UrlCorta.class).encontrar(idUrl));
+        for (Object res : browsers.getResultList()){
+            Object[] fila = (Object[]) res;
+            osCount.put((String) fila[0],(Long) fila[1]);
+        }
+        return osCount;
+    }
+
 
 }

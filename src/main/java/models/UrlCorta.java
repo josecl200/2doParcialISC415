@@ -2,7 +2,9 @@ package models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 import java.sql.Timestamp;
+import java.util.Base64;
 import java.util.Date;
 
 @Entity
@@ -59,5 +61,9 @@ public class UrlCorta implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public String idAsb64(){
+        return Base64.getEncoder().encodeToString(ByteBuffer.allocate(8).putLong(id).array());
     }
 }

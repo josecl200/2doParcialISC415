@@ -72,10 +72,12 @@ public class Routes {
             UrlCorta url = ServUrlCorta.getInstance().encontrar(idUrl);
             Map<String,Long> browsers = ServEstadistica.getInstance().getBrowsers(idUrl);
             Map<String,Long> oss = ServEstadistica.getInstance().getOss(idUrl);
+            Map<String,Long> actPorHora = ServEstadistica.getInstance().getActivityPerHour(idUrl);
             Map<String,Object> atributos = new HashMap<>();
             atributos.put("stats", stats);
             atributos.put("browsers",browsers);
             atributos.put("oss",oss);
+            atributos.put("actPorHora",actPorHora);
             atributos.put("usuario", request.session().attribute("usuario"));
             return new FreeMarkerEngine().render(new ModelAndView(atributos,"estadisticas.fml"));
         });
@@ -139,7 +141,11 @@ public class Routes {
 
         Spark.post("/adminRights/:idUser",(request, response) -> {
             Usuario user = ServUsuario.getInstance().getUser(Long.parseLong(request.params("idUser")));
-            user.setAdmin(true);
+            if(user.isAdmin()){
+                user.setAdmin(false);
+            }else{
+                user.setAdmin(true);
+            }
             ServUsuario.getInstance().editar(user);
             response.redirect("/users", 307);
             return null;
@@ -162,11 +168,19 @@ public class Routes {
 
 
         Spark.delete("/delUrl/:idUrl",(request, response) -> {
-            new CrudGenerico<>(UrlCorta.class).eliminar(Long.parseLong(request.params("idUrl")));
+            ByteBuffer byteId = ByteBuffer.wrap(Base64.getDecoder().decode(request.params("idUrl")));
+            long idUrl = byteId.getLong();
+            new CrudGenerico<>(UrlCorta.class).eliminar(idUrl);
             if(request.queryParams("user")!=null)
                 response.redirect("/myUrls");
             else
                 response.redirect("allUrls");
+            return null;
+        });
+
+        Spark.delete("/delUsr/:idUsr",(request, response) -> {
+            new CrudGenerico<>(UrlCorta.class).eliminar(Long.parseLong(request.params("idUsr")));
+            response.redirect("/users",307);
             return null;
         });
     }
