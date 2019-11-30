@@ -39,7 +39,7 @@
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">${user.nombre}</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">${user.username}
 
-                                <#if user.isAdmin()??>
+                                <#if user.admin>
                                 <form method="post" action="/adminRights/${user.id}">
                                     <button type="button downgrade submit" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                         <i class="fas fa-download fa-sm text-white-50"></i> Destituir</button>

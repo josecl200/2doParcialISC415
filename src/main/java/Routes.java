@@ -29,7 +29,7 @@ public class Routes {
 
         Spark.post("/acortar",(request, response) -> {
             UrlCorta url = new UrlCorta();
-            url.setCreador(request.session().attribute("user"));
+            url.setCreador(request.session().attribute("usuario"));
             url.setFecha(new Date());
             url.setUrl_orig(request.queryParams("url"));
             new CrudGenerico<>(UrlCorta.class).crear(url);
@@ -147,18 +147,19 @@ public class Routes {
                 user.setAdmin(true);
             }
             ServUsuario.getInstance().editar(user);
-            response.redirect("//users");
+            response.redirect("/users");
             return null;
         });
 
         Spark.get("/myUrls",(request, response) -> {
+            Usuario u = request.session().attribute("usuario");
+            List<UrlCorta> tempUrls = request.session().attribute("tempUrls");
             Map<String,Object> atributos = new HashMap<>();
             atributos.put("usuario", request.session().attribute("usuario"));
-            Usuario u = request.session().attribute("usuario");
             if(u!=null){
-                atributos.put("urls", ServUrlCorta.getInstance().getURLsByUser(u.getId()));
+                atributos.put("urls", ServUrlCorta.getInstance().getURLsByUser(u));
             }else{
-                atributos.put("urls", (List<UrlCorta>)request.session().attribute("tempUrls"));
+                atributos.put("urls", tempUrls);
             }
             return new FreeMarkerEngine().render(new ModelAndView(atributos,"listar.fml"));
         });
@@ -187,7 +188,7 @@ public class Routes {
         });
 
         Spark.post("/delUsr/:idUsr",(request, response) -> {
-            List<UrlCorta> list = ServUrlCorta.getInstance().getURLsByUser(Long.parseLong(request.params("idUsr")));
+            List<UrlCorta> list = ServUrlCorta.getInstance().getURLsByUser(ServUsuario.getInstance().getUser(Long.parseLong(request.params("idUsr"))));
             for (UrlCorta u: list) {
                 u.setCreador(null);
                 new CrudGenerico<>(UrlCorta.class).editar(u);
