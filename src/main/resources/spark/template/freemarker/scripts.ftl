@@ -42,7 +42,7 @@
                     +"<div id=\"qrcode\" name=\"qrcode\" style='margin-right: 50px'>"
                     +"</div>"+
                     "<script type=\"text/javascript\">\n" +
-                    "    new QRCode(document.getElementById(\"qrcode\"), {text: optUrl, width: 128, height: 128, colorDark :#000000, colorLight :#ffffff, correctLevel : QRCode.CorrectLevel.H});\n" +
+                    "    new QRCode(document.getElementById(\"qrcode\"), optUrl);\n" +
                     "</"+"script>";
                 newlink.append(infoLink);
             }
