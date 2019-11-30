@@ -33,7 +33,16 @@
             success: function(html) {
                 var newlink = $("#newlink");
                 optUrl = html.replace("/r/","/stats/");
-                var infoLink="<h6>Su nuevo link es <a href='"+html+"'>"+
+                var infoLink="<!-- Collapsable Card -->\n" +
+                    "   <div class=\"card shadow mb-4\">\n" +
+                    "   <!-- Card Header - Accordion -->\n" +
+                    "   <a href=\"#collapseCardExample\" class=\"d-block card-header py-3\" data-toggle=\"collapse\" role=\"button\" aria-expanded=\"true\" aria-controls=\"collapseCardExample\">\n" +
+                    "        <h6 class=\"m-0 font-weight-bold text-primary\">link acortado</h6>\n" +
+                    "   </a>\n" +
+                    "   <!-- Card Content - Collapse -->\n" +
+                    "       <div class=\"collapse show\" id=\"collapseCardExample\">\n" +
+                    "       <div class=\"card-body\">\n" +
+                    "<h6>Su nuevo link es <a href='"+html+"'>"+
                     html+
                     "</a></h6>"+
                     "<br>"+
@@ -43,7 +52,12 @@
                     +"</div>"+
                     "<script type=\"text/javascript\">\n" +
                     "    new QRCode(document.getElementById(\"qrcode\"), optUrl);\n" +
-                    "</"+"script>";
+                    "</"+"script>\"\n" +
+                    "       </div>\n"+
+                    "    </div>\n" +
+                    "  </div>\n" +
+                    " </div>"
+                ;
                 newlink.append(infoLink);
             }
         });

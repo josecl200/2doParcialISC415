@@ -11,8 +11,8 @@
             <div class="modal-body">Esta seguro que desea salir?</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <!--<a class="btn btn-primary" href="login.html">Logout</a>-->
-                <a class="btn btn-primary" onclick="document.getElementById('logout').submit();">Cerrar sesion</a>
+                <a class="btn btn-primary" href="/logout">Cerrar sesion</a>
+                <!--<a class="btn btn-primary" onclick="document.getElementById('logout').submit();">Cerrar sesion</a>-->
             </div>
         </div>
     </div>
