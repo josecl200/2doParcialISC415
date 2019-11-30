@@ -179,11 +179,12 @@ public class Routes {
             for (Estadisticas e:ests) {
                 new CrudGenerico<>(Estadisticas.class).eliminar(e.getId());
             }
+            UrlCorta url = ServUrlCorta.getInstance().encontrar(idUrl);
             new CrudGenerico<>(UrlCorta.class).eliminar(idUrl);
-            if(request.queryParams("user")!=null)
-                response.redirect("//myUrls");
+            if(request.queryParams("path")=="all")
+                response.redirect("/allUrls");
             else
-                response.redirect("//allUrls");
+                response.redirect("/myUrls");
             return null;
         });
 

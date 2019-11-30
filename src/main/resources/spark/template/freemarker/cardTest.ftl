@@ -13,6 +13,7 @@
                             <i class="fas fa-download fa-sm text-white-50"></i> Estadisticas</a>
 
                         <form method="post" action="/delUrl/${url.idAsb64()}">
+                            <input id="path" name="path" class="path" type="hidden" value=""/>
                             <button type="button submit" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                 <i class="fas fa-download fa-sm text-white-50"></i> Borrar Link</button>
                         </form>
@@ -41,12 +42,14 @@
 
                                 <#if user.admin>
                                 <form method="post" action="/adminRights/${user.id}">
+
                                     <button type="button downgrade submit" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                         <i class="fas fa-download fa-sm text-white-50"></i> Destituir</button>
                                 </form>
 
                                 <#else>
                                     <form method="post" action="/adminRights/${user.id}">
+                                        <input id="path" type="hidden"/>
                                         <button type="button upgrade submit" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                             <i class="fas fa-download fa-sm text-white-50"></i> Promover</button>
                                     </form>
