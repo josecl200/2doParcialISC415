@@ -12,7 +12,7 @@
     <title>Estadisticas de enlaces</title>
 
     <!-- Custom fonts & Styles-->
-    <#include "*/fonts.ftl">
+    <#include "fonts.ftl">
     <!-- Custom fonts & Styles-->
 
 </head>
@@ -23,7 +23,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <#include "*/side.ftl">
+    <#include "side.ftl">
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -33,7 +33,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <#include "*/nav.ftl">
+            <#include "nav.ftl">
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
@@ -53,7 +53,7 @@
                 <!-- Content Row -->
 
                 <div class="row">
-                    <#include "*/charts.ftl">
+                    <#include "charts.ftl">
                 </div>
 
                 <!-- Content Row -->
@@ -74,7 +74,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <#include "*/foot.ftl">
+        <#include "foot.ftl">
         <!-- End of Footer -->
 
     </div>
@@ -90,11 +90,11 @@
 
 
 <!-- Logout Modal-->
-<#include "*/LogMod.ftl">
+<#include "LogMod.ftl">
 <!-- End Logout Modal-->
 
 <!-- Bootstrap Scripts-->
-<#include "*/scripts.ftl">
+<#include "scripts.ftl">
 <!-- Bootstrap Scripts-->
 
 
