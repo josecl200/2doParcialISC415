@@ -174,6 +174,10 @@ public class Routes {
         Spark.post("/delUrl/:idUrl",(request, response) -> {
             ByteBuffer byteId = ByteBuffer.wrap(Base64.getDecoder().decode(request.params("idUrl")));
             long idUrl = byteId.getLong();
+            List<Estadisticas> ests = ServEstadistica.getInstance().getStatsForURL(idUrl);
+            for (Estadisticas e:ests) {
+                new CrudGenerico<>(Estadisticas.class).eliminar(e.getId());
+            }
             new CrudGenerico<>(UrlCorta.class).eliminar(idUrl);
             if(request.queryParams("user")!=null)
                 response.redirect("/myUrls");
