@@ -40,7 +40,7 @@ public class Routes {
                 tempUrls.add(url);
                 request.session().attribute("tempUrls",tempUrls);
             }
-            return "http://localhost:8081/r/"+Base64.getEncoder().encodeToString(ByteBuffer.allocate(8).putLong(url.getId()).array());
+            return "https://short.josecl200.me/r/"+Base64.getEncoder().encodeToString(ByteBuffer.allocate(8).putLong(url.getId()).array());
         });
 
         Spark.get("/r/:idUrl",(request, response) -> {
