@@ -46,7 +46,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Custom Utilities:</h6>
                     <a class="collapse-item" href="/allUrls">Todas las Url</a>
-                    <a class="collapse-item" href="/user">Lista de usuarios</a>
+                    <a class="collapse-item" href="/users">Lista de usuarios</a>
                 </div>
             </div>
         </li>
