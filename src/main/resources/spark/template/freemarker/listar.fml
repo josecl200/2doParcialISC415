@@ -9,7 +9,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Estadisticas de enlaces</title>
+    <#if usuario??&& usuari ==admin>
+    <title>Estadisticas de usuarios</title>
+        <#else>
+            <title>Estadisticas de enlaces</title>
+    </#if>
 
     <!-- Custom fonts & Styles-->
     <#include "fonts.ftl">
@@ -49,24 +53,10 @@
 
                 <!-- Content Row -->
                 <div class="row">
-                    <#include "cards.ftl">
+                    <#include "cardTest.ftl">
                 </div>
                 <!-- Content Row -->
 
-                <div class="row">
-                    <#include "charts.ftl">
-                </div>
-
-                <!-- Content Row -->
-                <div class="row">
-
-                    <!-- Content Column -->
-                    <div class="col-lg-6 mb-4">
-
-                        <!--Croschenza-->
-
-                    </div>
-                </div>
 
             </div>
             <!-- /.container-fluid -->
