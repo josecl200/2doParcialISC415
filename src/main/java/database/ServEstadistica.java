@@ -60,7 +60,7 @@ public class ServEstadistica extends CrudGenerico<Estadisticas> {
         browsers.setParameter("URL", new CrudGenerico<>(UrlCorta.class).encontrar(idUrl));
         for (Object res : browsers.getResultList()){
             Object[] fila = (Object[]) res;
-            osCount.put((String) fila[0],(Long) fila[1]);
+            osCount.put(((Integer) fila[0]).toString(),(Long) fila[1]);
         }
         return osCount;
     }

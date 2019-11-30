@@ -48,16 +48,10 @@
                 </div>
 
                 <!-- Content Row -->
-                <div class="row">
-                    <#include "cardTest.ftl">
-                </div>
+
 
                 <!-- Content Row -->
-                    <#include "charts.ftl">
-
-                <div class="row">
-                    <#include "charts.ftl">
-                </div>
+                <#include "charts.ftl">
 
                 <!-- Content Row -->
                 <div class="row">
