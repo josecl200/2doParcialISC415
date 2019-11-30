@@ -147,7 +147,7 @@ public class Routes {
                 user.setAdmin(true);
             }
             ServUsuario.getInstance().editar(user);
-            response.redirect("/users");
+            response.redirect("//users");
             return null;
         });
 
@@ -180,9 +180,9 @@ public class Routes {
             }
             new CrudGenerico<>(UrlCorta.class).eliminar(idUrl);
             if(request.queryParams("user")!=null)
-                response.redirect("/myUrls");
+                response.redirect("//myUrls");
             else
-                response.redirect("/allUrls");
+                response.redirect("//allUrls");
             return null;
         });
 
@@ -193,7 +193,7 @@ public class Routes {
                 new CrudGenerico<>(UrlCorta.class).editar(u);
             }
             new CrudGenerico<>(Usuario.class).eliminar(Long.parseLong(request.params("idUsr")));
-            response.redirect("/users");
+            response.redirect("//users");
             return null;
         });
 
