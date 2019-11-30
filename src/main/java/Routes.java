@@ -155,7 +155,11 @@ public class Routes {
             Map<String,Object> atributos = new HashMap<>();
             atributos.put("usuario", request.session().attribute("usuario"));
             Usuario u = request.session().attribute("usuario");
-            atributos.put("urls", ServUrlCorta.getInstance().getURLsByUser(u.getId()));
+            if(u!=null){
+                atributos.put("urls", ServUrlCorta.getInstance().getURLsByUser(u.getId()));
+            }else{
+                atributos.put("urls", (List<UrlCorta>)request.session().attribute("tempUrls"));
+            }
             return new FreeMarkerEngine().render(new ModelAndView(atributos,"listar.fml"));
         });
 
