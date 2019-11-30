@@ -9,10 +9,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <#if usuario??&& usuari ==admin>
-    <title>Estadisticas de usuarios</title>
+    <#if users??>
+    <title>Listado de usuarios</title>
         <#else>
-            <title>Estadisticas de enlaces</title>
+            <title>Listado de enlaces</title>
     </#if>
 
     <!-- Custom fonts & Styles-->

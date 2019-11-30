@@ -33,7 +33,17 @@ public class Filters {
             }
         });
 
-        Spark.before("/myUrls/*", (request, response) -> {
+        Spark.before("/users", (request, response) -> {
+            Usuario user = request.session().attribute("usuario");
+            if(user!=null) {
+                if (!user.isAdmin())
+                    Spark.halt(403, "<h1>Su usuario no tiene los privilegios necesarios para esta operacion</h1>");
+            }else{
+                Spark.halt(401,"<h1>Usted no está autenticado en el servidor</h1>");
+            }
+        });
+
+        Spark.before("/myUrls", (request, response) -> {
             Usuario user = request.session().attribute("usuario");
             if(user==null)
                 if(request.session().attribute("tempUrls")==null)

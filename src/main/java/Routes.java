@@ -136,7 +136,7 @@ public class Routes {
             Map<String,Object> atributos = new HashMap<>();
             atributos.put("usuario", request.session().attribute("usuario"));
             atributos.put("users", ServUsuario.getInstance().listarUsuario() );
-            return new FreeMarkerEngine().render(new ModelAndView(atributos,"users.fml"));
+            return new FreeMarkerEngine().render(new ModelAndView(atributos,"listar.fml"));
         });
 
         Spark.post("/adminRights/:idUser",(request, response) -> {
@@ -147,7 +147,7 @@ public class Routes {
                 user.setAdmin(true);
             }
             ServUsuario.getInstance().editar(user);
-            response.redirect("/users", 307);
+            response.redirect("/users");
             return null;
         });
 
@@ -156,31 +156,43 @@ public class Routes {
             atributos.put("usuario", request.session().attribute("usuario"));
             Usuario u = request.session().attribute("usuario");
             atributos.put("urls", ServUrlCorta.getInstance().getURLsByUser(u.getId()));
-            return new FreeMarkerEngine().render(new ModelAndView(atributos,"urls.fml"));
+            return new FreeMarkerEngine().render(new ModelAndView(atributos,"listar.fml"));
         });
 
         Spark.get("/allUrls",(request, response) -> {
             Map<String,Object> atributos = new HashMap<>();
             atributos.put("usuario", request.session().attribute("usuario"));
             atributos.put("urls", ServUrlCorta.getInstance().getAllUrls());
-            return new FreeMarkerEngine().render(new ModelAndView(atributos,"urls.fml"));
+            return new FreeMarkerEngine().render(new ModelAndView(atributos,"listar.fml"));
         });
 
 
-        Spark.delete("/delUrl/:idUrl",(request, response) -> {
+        Spark.post("/delUrl/:idUrl",(request, response) -> {
             ByteBuffer byteId = ByteBuffer.wrap(Base64.getDecoder().decode(request.params("idUrl")));
             long idUrl = byteId.getLong();
             new CrudGenerico<>(UrlCorta.class).eliminar(idUrl);
             if(request.queryParams("user")!=null)
                 response.redirect("/myUrls");
             else
-                response.redirect("allUrls");
+                response.redirect("/allUrls");
             return null;
         });
 
-        Spark.delete("/delUsr/:idUsr",(request, response) -> {
+        Spark.post("/delUsr/:idUsr",(request, response) -> {
+            List<UrlCorta> list = ServUrlCorta.getInstance().getURLsByUser(Long.parseLong(request.params("idUsr")));
+            for (UrlCorta u: list) {
+                u.setCreador(null);
+                new CrudGenerico<>(UrlCorta.class).editar(u);
+            }
             new CrudGenerico<>(UrlCorta.class).eliminar(Long.parseLong(request.params("idUsr")));
             response.redirect("/users",307);
+            return null;
+        });
+
+        Spark.get("/logout",(request, response) -> {
+            request.session().invalidate();
+            response.removeCookie("USER");
+            response.redirect("/");
             return null;
         });
     }

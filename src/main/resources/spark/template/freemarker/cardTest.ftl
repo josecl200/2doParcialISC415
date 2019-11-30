@@ -1,4 +1,4 @@
-<#if usuario??>
+<#if urls??>
 <#list urls as url>
 <!-- Card -->
 <div class="col-xl-3 col-md-6 mb-4">
@@ -12,7 +12,7 @@
                         <a href="/stats/${url.idAsb64()}" type="button stats" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                             <i class="fas fa-download fa-sm text-white-50"></i> Estadisticas</a>
 
-                        <form method="delete" action="/delUrl/${url.idAsb64()}">
+                        <form method="post" action="/delUrl/${url.idAsb64()}">
                             <button type="button submit" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                 <i class="fas fa-download fa-sm text-white-50"></i> Borrar Link</button>
                         </form>
@@ -26,11 +26,6 @@
     </div>
 </div>
 </#list>
-<#else>
-    <p>
-        Peixe Cascudo
-    </p>
-
 </#if>
 
 <#if users??>
@@ -44,21 +39,21 @@
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">${user.nombre}</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">${user.username}
 
-                                <#if usuario.isAdmin()??>
-                                <form method="post" action="/adminRights/${usuario.id}">
+                                <#if user.isAdmin()??>
+                                <form method="post" action="/adminRights/${user.id}">
                                     <button type="button downgrade submit" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                         <i class="fas fa-download fa-sm text-white-50"></i> Destituir</button>
                                 </form>
 
                                 <#else>
-                                    <form method="post" action="/adminRights/${usuario.id}">
+                                    <form method="post" action="/adminRights/${user.id}">
                                         <button type="button upgrade submit" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                             <i class="fas fa-download fa-sm text-white-50"></i> Promover</button>
                                     </form>
 
                                 </#if>
 
-                                <form method="delete" action="/delUsr/${user.id}">
+                                <form method="post" action="/delUsr/${user.id}">
                                     <button type="button delete submit" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                         <i class="fas fa-download fa-sm text-white-50"></i> Borrar Usuario</button>
                                 </form>
@@ -73,9 +68,5 @@
             </div>
         </div>
     </#list>
-<#else>
-    <p>
-        Peixe Cascudo
-    </p>
 
 </#if>
