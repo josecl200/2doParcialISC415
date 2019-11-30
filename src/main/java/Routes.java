@@ -192,7 +192,7 @@ public class Routes {
                 u.setCreador(null);
                 new CrudGenerico<>(UrlCorta.class).editar(u);
             }
-            new CrudGenerico<>(UrlCorta.class).eliminar(Long.parseLong(request.params("idUsr")));
+            new CrudGenerico<>(Usuario.class).eliminar(Long.parseLong(request.params("idUsr")));
             response.redirect("/users",307);
             return null;
         });
