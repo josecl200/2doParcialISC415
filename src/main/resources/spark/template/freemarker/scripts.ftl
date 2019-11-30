@@ -19,7 +19,10 @@
 <script src="/js/demo/chart-area-demo.js"></script>
 <script src="/js/demo/chart-pie-demo.js"></script>
 <script src="/js/qrcode.min.js"></script>
+<!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
+
 <script>
+    //QR Gen
     var optUrl;
     $(document).on('submit', '#acortar', function(e) {
         var url = "url=" + $("#url").val();
@@ -41,11 +44,11 @@
                     "<script type=\"text/javascript\">\n" +
                     "    new QRCode(document.getElementById(\"qrcode\"), {text: optUrl, width: 128, height: 128, colorDark :#000000, colorLight :#ffffff, correctLevel : QRCode.CorrectLevel.H});\n" +
                     "</"+"script>";
-
-
                 newlink.append(infoLink);
             }
         });
         e.preventDefault();
     });
 </script>
+
+

@@ -70,15 +70,12 @@ public class Routes {
             long idUrl = byteId.getLong();
             List<Estadisticas> stats = ServEstadistica.getInstance().getStatsForURL(idUrl);
             UrlCorta url = ServUrlCorta.getInstance().encontrar(idUrl);
+            Map<String,Long> browsers = ServEstadistica.getInstance().getBrowsers(idUrl);
+            Map<String,Long> oss = ServEstadistica.getInstance().getOss(idUrl);
             Map<String,Object> atributos = new HashMap<>();
             atributos.put("stats", stats);
-            atributos.put("usuario", request.session().attribute("usuario"));
-            return new FreeMarkerEngine().render(new ModelAndView(atributos,"estadisticas.fml"));
-        });
-
-        Spark.get("/stats",(request, response) -> {
-            Map<String,Object> atributos = new HashMap<>();
-            atributos.put("stats", null);
+            atributos.put("browsers",browsers);
+            atributos.put("oss",oss);
             atributos.put("usuario", request.session().attribute("usuario"));
             return new FreeMarkerEngine().render(new ModelAndView(atributos,"estadisticas.fml"));
         });
