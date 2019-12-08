@@ -1,3 +1,4 @@
+import apis.ApiRest;
 import database.Bootstrap;
 import database.CrudGenerico;
 import database.DBCon;
@@ -19,6 +20,7 @@ public class Main {
         ServUsuario.getInstance().createAdmin();
         Filters.applyFilters();
         Routes.rutas();
+        ApiRest.restful();
     }
 
 }
