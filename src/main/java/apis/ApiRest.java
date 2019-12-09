@@ -89,14 +89,16 @@ public class ApiRest {
                 return urlArray.toString();
             });
 
-            Spark.post("/newUrl",(request, response) -> {
+            Spark.post("/newUrl/",(request, response) -> {
                 JsonParser parser = new JsonParser();
                 JsonObject urlnueva = parser.parse(request.body()).getAsJsonObject();
+                System.out.println(urlnueva);
                 urlnueva.add("creador",parser.parse(JsonUtilidades.toJson(ServUsuario.getInstance().getUser(urlnueva.get("creador").getAsString()))));
                 UrlCorta newUrlObject = new Gson().fromJson(urlnueva,UrlCorta.class);
                 new CrudGenerico<>(UrlCorta.class).crear(newUrlObject);
-                return "breh"; //TODO: crear url desde API REST
-            });
+
+                return newUrlObject; //TODO: crear url desde API REST
+            },JsonUtilidades.json());
 
 
 
