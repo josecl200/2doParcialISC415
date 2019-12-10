@@ -18,8 +18,8 @@ import java.util.*;
 
 
 public class ApiRest {
-    private static String privKey="wqFRdcOpIGFsZWdyw61hIGN1YW5kbyBtZSBkaWplcm9uClZhbW9zIGEgbGEgY2FzYSBkZWwgU2XD\n" +
-            "sW9yIQpZYSBlc3TDoW4gcGlzYW5kbwpOdWVzdHJvcyBwaWVzIHR1cwpVbWJyYWxlcyBKZXJ1c2Fs\n" +
+    private static String privKey="wqFRdcOpIGFsZWdyw61hIGN1YW5kbyBtZSBkaWplcm9uClZhbW9zIGEgbGEgY2FzYSBkZWwgU2XD" +
+            "sW9yIQpZYSBlc3TDoW4gcGlzYW5kbwpOdWVzdHJvcyBwaWVzIHR1cwpVbWJyYWxlcyBKZXJ1c2Fs" +
             "w6lu"; //k alegria qan2 m di g ron jjjjjjj
     public static void restful(){
         Spark.post("/token", (request, response) -> {
@@ -32,8 +32,8 @@ public class ApiRest {
             }else{
                 return null;
             }
-
         });
+
         Spark.path("/rest",()->{
             /*Spark.before("/*",(request, response) ->{
                 String token = request.headers("token") != null ? request.headers("token") : request.headers("TOKEN");
@@ -52,12 +52,12 @@ public class ApiRest {
                 JsonElement urlElement = parser.parse(urlJsonString);
                 JsonArray urlArray = urlElement.getAsJsonArray();
                 for (int i=0;i<urlArray.size();i++) {
-                    long idUrl = urlArray.get(i).getAsJsonObject().get("id").getAsLong();
+                    JsonObject urlJson = urlArray.get(i).getAsJsonObject();
+                    long idUrl = urlJson.get("id").getAsLong();
                     HashMap<String,Object> stats = new HashMap<>();
                     stats.put("OSs",ServEstadistica.getInstance().getOss(idUrl));
                     stats.put("Browsers",ServEstadistica.getInstance().getBrowsers(idUrl));
                     stats.put("ActPerHour",ServEstadistica.getInstance().getActivityPerHour(idUrl));
-                    JsonObject urlJson = urlArray.get(i).getAsJsonObject();
                     urlJson.add("urlCorta",parser.parse(JsonUtilidades.toJson("https://short.josecl200.me/r/"+ Base64.getEncoder().encodeToString(ByteBuffer.allocate(8).putLong(idUrl).array()))));
                     urlJson.add("stats",parser.parse(JsonUtilidades.toJson(stats)));
                     if(!urlJson.get("creador").isJsonNull())
@@ -73,13 +73,12 @@ public class ApiRest {
                 JsonElement urlElement = parser.parse(urlJsonString);
                 JsonArray urlArray = urlElement.getAsJsonArray();
                 for (int i=0;i<urlArray.size();i++) {
-                    long idUrl = urlArray.get(i).getAsJsonObject().get("id").getAsLong();
+                    JsonObject urlJson = urlArray.get(i).getAsJsonObject();
+                    long idUrl = urlJson.get("id").getAsLong();
                     HashMap<String,Object> stats = new HashMap<>();
                     stats.put("OSs",ServEstadistica.getInstance().getOss(idUrl));
                     stats.put("Browsers",ServEstadistica.getInstance().getBrowsers(idUrl));
                     stats.put("ActPerHour",ServEstadistica.getInstance().getActivityPerHour(idUrl));
-
-                    JsonObject urlJson = urlArray.get(i).getAsJsonObject();
                     urlJson.add("urlCorta",parser.parse(JsonUtilidades.toJson("https://short.josecl200.me/r/"+ Base64.getEncoder().encodeToString(ByteBuffer.allocate(8).putLong(idUrl).array()))));
                     urlJson.add("stats",parser.parse(JsonUtilidades.toJson(stats)));
                     if(!urlJson.get("creador").isJsonNull())
@@ -97,13 +96,11 @@ public class ApiRest {
                 UrlCorta newUrlObject = new Gson().fromJson(urlnueva,UrlCorta.class);
                 new CrudGenerico<>(UrlCorta.class).crear(newUrlObject);
 
-                return newUrlObject; //TODO: crear url desde API REST
+                return newUrlObject;
             },JsonUtilidades.json());
-
-
-
         });
     }
+
     public static String createJWT(String id, String issuer, String subject, long ttlMillis) {
 
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;

@@ -9,13 +9,11 @@ import spark.ModelAndView;
 import spark.Session;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
-
 import ua_parser.Parser;
 import ua_parser.Client;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.sql.Timestamp;
 import java.util.*;
 
 public class Routes {
@@ -32,7 +30,7 @@ public class Routes {
             url.setCreador(request.session().attribute("usuario"));
             url.setFecha(new Date());
             url.setUrl_orig(request.queryParams("url"));
-            new CrudGenerico<>(UrlCorta.class).crear(url);
+            ServUrlCorta.getInstance().crear(url);
             if (url.getCreador()==null){
                 List<UrlCorta> tempUrls = (List<UrlCorta>) request.session().attribute("tempUrls");
                 if(tempUrls==null)
@@ -115,11 +113,11 @@ public class Routes {
             Usuario newUser    = new Usuario(username,nombre,hashPassEnt, false);
             List<UrlCorta> tempUrls = request.session().attribute("tempUrls");
             try{
-                new CrudGenerico<Usuario>(Usuario.class).crear(newUser);
+                ServUsuario.getInstance().crear(newUser);
                 if(tempUrls!=null){
                     for (UrlCorta u: tempUrls) {
                         u.setCreador(newUser);
-                        new CrudGenerico<>(UrlCorta.class).editar(u);
+                        ServUrlCorta.getInstance().editar(u);
                     }
                 }
                 Map<String,Object> atributos = new HashMap<>();
@@ -177,10 +175,10 @@ public class Routes {
             long idUrl = byteId.getLong();
             List<Estadisticas> ests = ServEstadistica.getInstance().getStatsForURL(idUrl);
             for (Estadisticas e:ests) {
-                new CrudGenerico<>(Estadisticas.class).eliminar(e.getId());
+                ServEstadistica.getInstance().eliminar(e.getId());
             }
             UrlCorta url = ServUrlCorta.getInstance().encontrar(idUrl);
-            new CrudGenerico<>(UrlCorta.class).eliminar(idUrl);
+            ServUrlCorta.getInstance().eliminar(idUrl);
             if(request.queryParams("path")=="all")
                 response.redirect("/allUrls");
             else
@@ -192,9 +190,9 @@ public class Routes {
             List<UrlCorta> list = ServUrlCorta.getInstance().getURLsByUser(ServUsuario.getInstance().getUser(Long.parseLong(request.params("idUsr"))));
             for (UrlCorta u: list) {
                 u.setCreador(null);
-                new CrudGenerico<>(UrlCorta.class).editar(u);
+                ServUrlCorta.getInstance().editar(u);
             }
-            new CrudGenerico<>(Usuario.class).eliminar(Long.parseLong(request.params("idUsr")));
+            ServUsuario.getInstance().eliminar(Long.parseLong(request.params("idUsr")));
             response.redirect("//users");
             return null;
         });
