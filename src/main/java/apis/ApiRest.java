@@ -88,7 +88,7 @@ public class ApiRest {
                 return urlArray.toString();
             });
 
-            Spark.post("/newUrl/",(request, response) -> {
+            Spark.post("/newUrl",(request, response) -> {
                 JsonParser parser = new JsonParser();
                 JsonObject urlnueva = parser.parse(request.body()).getAsJsonObject();
                 System.out.println(urlnueva);
