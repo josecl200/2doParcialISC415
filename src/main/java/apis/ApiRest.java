@@ -35,12 +35,12 @@ public class ApiRest {
         });
 
         Spark.path("/rest",()->{
-            /*Spark.before("/*",(request, response) ->{
+            Spark.before("/*",(request, response) ->{
                 String token = request.headers("token") != null ? request.headers("token") : request.headers("TOKEN");
                 if (token == null || token.isEmpty() || decodeJWT(token)==null) {
                     Spark.halt(401);
                 }
-            });*///TODO: probar JWT con login de usuario
+            });//TODO: probar JWT con login de usuario
             Spark.afterAfter("/*", (request, response) ->
                     response.header("Content-Type", "application/json")
             );

@@ -1,37 +1,47 @@
 from suds.client import Client
 
-url = 'http://localhost:7777/ws/AcademicoWebService'
-wsdl = 'http://localhost:7777/ws/AcademicoWebService?wsdl'
+url = 'http://localhost:7777/ws/ServiciosJabonURLService'
+wsdl = 'http://localhost:7777/ws/ServiciosJabonURLService?wsdl'
 
 client = Client(url=wsdl, location=url)
 
-def listarEstudiantes():
-    lista = client.service.getAllEstudiante()
-    for est in lista:
-        print("Matricula: {0}, Nombre: {1}".format(est['matricula'], est['nombre']))
+def listarURLs(username):
+    if username:
+        pass
+    else:
+        lista = client.service.getAllURLS()
+        for i in lista:
+            for k,v in i:
+                print(k,v)
+            print("-------------")
 
-def asignatura(id):
-    return client.service.getAsignatura(id)
+
+
+def newUrl(origUrl,username):
+    if origUrl:
+        return client.service.insertarURL(origUrl,username)
+
 
 
 while True:
     opcion = int(input('''\nPresione el numero de la opcion correspondiente
-    (1) Listar estudiantes
-    (2) Buscar una asignatura
-    (3) Buscar un profesor
+    (1) Listar URLs
+    (2) Buscar las URL de un usuario
+    (3) Crear una URL
     (q) Salir
     :'''))
     
     if (opcion == 1):
-        listarEstudiantes()
+        listarURLs(False)
 
     elif (opcion == 2):
-        id = input("\Digite el codigo de la asignatura: ")
-        print(asignatura(id))
+        id = input("\nDigite el usuario: ")
+        print(listarURLs(id))
 
     elif (opcion==3):
-        id = input("\Digite el codigo del profesor: ")
-        print(client.service.getProfesor(id))
+        id = input("\nDigite el usuario (deje vacio para insertar como visitante): ")
+        target = input("\nDigite la URL: ")
+        print(newUrl(target,id))
 
     elif (opcion=='q'):
         break
