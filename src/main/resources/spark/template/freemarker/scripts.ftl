@@ -42,7 +42,7 @@
                     "   <!-- Card Content - Collapse -->\n" +
                     "       <div class=\"collapse show\" id=\"collapseCardExample\">\n" +
                     "       <div class=\"card-body\">\n" +
-                    "<h6>Su nuevo link es <a href='"+optUrl+"' class='link-previews'>"+
+                    "<h6>Su nuevo link es <a href='"+optUrl+"' class='"+link-previews+"'>"+
                     html+
                     "</a></h6>"+
                     "<br>"+
