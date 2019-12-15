@@ -42,9 +42,8 @@
                     "   <!-- Card Content - Collapse -->\n" +
                     "       <div class=\"collapse show\" id=\"collapseCardExample\">\n" +
                     "       <div class=\"card-body\">\n" +
-                    "<h6>Su nuevo link es <a href='"+optUrl+"' class='"+link-previews+"'>"+
-                    html+
-                    "</a></h6>"+
+                    "<h6>Su nuevo link es <a class=\"link-previews\" href='"+ $("#url").val() +"'>" + html +" </a>" +
+                    "</h6>"+
                     "<br>"+
                     "<br>"+
                     "<h6>Puede acceder al siguiente link o escanear el siguiente codigo:</h6> <a href='"+optUrl+"'>Estadisticas</a>"
@@ -59,6 +58,7 @@
                     " </div>"
                 ;
                 newlink.append(infoLink);
+                microlink('.link-previews');
             }
         });
         e.preventDefault();

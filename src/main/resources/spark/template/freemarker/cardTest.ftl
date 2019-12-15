@@ -1,7 +1,7 @@
 <#if urls??>
 <#list urls as url>
 <!-- Card -->
-    <div class="card mb-4 py-3 border-left-warning shadow h-100 ">
+    <div class="card mb-4 py-3 border-left-warning shadow h-100">
         <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
@@ -27,8 +27,7 @@
 <#if users??>
     <#list users as user>
         <!-- Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card mb-4 py-3 border-left-warning shadow h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -64,7 +63,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </#list>
-
 </#if>
