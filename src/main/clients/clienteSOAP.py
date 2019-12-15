@@ -1,7 +1,7 @@
 from suds.client import Client
 
-url = 'http://localhost:7777/ws/ServiciosJabonURLService'
-wsdl = 'http://localhost:7777/ws/ServiciosJabonURLService?wsdl'
+url = 'http://josecl200.me:7777/ws/ServiciosJabonURLService'
+wsdl = 'http://josecl200.me:7777/ws/ServiciosJabonURLService?wsdl'
 
 client = Client(url=wsdl, location=url)
 

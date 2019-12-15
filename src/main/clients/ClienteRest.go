@@ -1,5 +1,4 @@
 package main
-
 import (
 	"encoding/json"
 	"fmt"
@@ -9,10 +8,8 @@ import (
 	"time"
 	"unicode"
 )
-
-var DomainURL string = "http://localhost:42069"
+var DomainURL string = "https://short.josecl200.me"
 var token string
-
 type urlCorta struct {
 	 Id 	   int    `json:"id"`
 	 Creador   string `json:"creador"`
@@ -26,7 +23,6 @@ type stats struct{
 	Browsers map[string]interface{} `json:"Browsers"`
 	OSs map[string]interface{} `json:"OSs"`
 }
-
 func retrieveToken(usuario string, pass string) (res bool) {
 	client := resty.New()
 	resp, err := client.R().
@@ -58,7 +54,6 @@ func getAllURLs() []urlCorta {
 	json.Unmarshal(body, &urls)
 	return urls
 }
-
 func getUserURLs(username string) []urlCorta{
 	client := resty.New()
 	var urls []urlCorta
@@ -66,11 +61,9 @@ func getUserURLs(username string) []urlCorta{
 		EnableTrace().
 		SetHeader("token",token).
 		Get(DomainURL+"/rest/urls/" + username)
-
 	json.Unmarshal(resp.Body(), &urls)
 	return urls
 }
-
 func crearURL(newUrl urlCorta) (res bool) {
 	client := resty.New()
 	resp, err := client.R().
@@ -87,8 +80,6 @@ func crearURL(newUrl urlCorta) (res bool) {
 	}
 	return
 }
-
-
 func clearMenu() {
 	clear := make(map[string]func()) //Initialize it
 	clear["linux"] = func() {
@@ -102,7 +93,6 @@ func clearMenu() {
 		cmd.Run()
 	}
 }
-
 func initMenu() {
 	clearMenu()
 	fmt.Println("Bienvenido al cliente de API REST para el acortador de URL para ISC-415, digite el número necesario para lo que quiere hacer, sino digite q para salir")
@@ -111,7 +101,6 @@ func initMenu() {
 	fmt.Println("2) Ver las URL pertenecientes a un usuario")
 	fmt.Println("3) Crear un nuevo link")
 }
-
 func main() {
 	doIt := true
 	var i rune
@@ -128,12 +117,9 @@ func main() {
 			}else{
 				println("No tiene un token habilitado")
 			}
-
-
-
 		case '2':
 			if(token!=""){
-				print("Digite el numero de matricula del estudiante")
+				print("Digite el nombre del usuario")
 				var user string
 				_, _ = fmt.Scanf("%s\n", &user)
 				urls := getUserURLs(user)
@@ -143,8 +129,6 @@ func main() {
 			}else{
 				println("No tiene un token habilitado")
 			}
-
-
 		case '3':
 			if(token!=""){
 				var newurl urlCorta
@@ -175,7 +159,7 @@ func main() {
 			retrieveToken(usr,pass)
 		default:
 			println("Digite una opcion valida e intentelo de nuevo (pulse cualquier tecla para continuar)")
-			//_, _ = fmt.Scanf("%c", &i)
+			_, _ = fmt.Scanf("%c", &i)
 		}
 		correct := false
 		for !correct {
@@ -193,27 +177,5 @@ func main() {
 				}
 			}
 		}
-
 	}
-
-	/*estudiantes := getEstudiantes()
-	for _, est := range estudiantes {
-		println("nombre: " + est.Nombre)
-		println("matricula: " + strconv.Itoa(est.Matricula))
-		println("correo: " + est.Correo)
-		println("carrera: " + est.Carrera)
-	}
-	mat := 20160138
-	stud := getEstudiante(mat)
-	println("nombre: " + stud.Nombre)
-	println("matricula: " + strconv.Itoa(stud.Matricula))
-	println("correo: " + stud.Correo)
-	println("carrera: " + stud.Carrera)
-
-	var newEstud estudiante
-	newEstud.Matricula = 20160138
-	newEstud.Nombre = "José Ureña"
-	newEstud.Correo = "polquefuequemedicuenta@pablopiddy.do"
-	newEstud.Carrera = "ISC"
-	fmt.Println(crearEstudiante(newEstud))*/
 }
