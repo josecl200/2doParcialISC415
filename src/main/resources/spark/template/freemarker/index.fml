@@ -49,7 +49,7 @@
                             <div class="input-group">
                                 <input type="url" name="url" id="url" class="form-control border-0 small" placeholder="Insertar link..." aria-label="Search" aria-describedby="basic-addon2">
                                 <!-- boton -->
-                                <button type="button submit" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                <button type="button submit" class=" d-sm-inline-block btn btn-sm btn-warning shadow-sm">
                                     <i class="fas fa-download fa-sm text-white-50"></i> Generar Link</button>
                                 <!-- boton -->
                             </div>
