@@ -1,12 +1,12 @@
 <#if urls??>
 <#list urls as url>
 <!-- Card -->
-    <div class="card border-left-warning shadow h-100 py-2">
+    <div class="card mb-4 py-3 border-left-warning shadow h-100 ">
         <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1"><a href="/r/${url.idAsb64()}">${url.idAsb64()}</a></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><a class="link-previews">${url.url_orig}</a>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><a href="${url.url_orig}" class="link-previews">${url.url_orig}</a>
 
                         <a href="/stats/${url.idAsb64()}" type="button stats" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                             <i class="fas fa-download fa-sm text-white-50"></i> Estadisticas</a>
