@@ -32,7 +32,7 @@
             data: url,
             success: function(html) {
                 var newlink = $("#newlink");
-                optUrl = html.replace("/r/","/stats/");
+                optUrl = html;
                 var infoLink="<!-- Collapsable Card -->\n" +
                     "   <div class=\"card shadow mb-4\">\n" +
                     "   <!-- Card Header - Accordion -->\n" +
@@ -42,16 +42,16 @@
                     "   <!-- Card Content - Collapse -->\n" +
                     "       <div class=\"collapse show\" id=\"collapseCardExample\">\n" +
                     "       <div class=\"card-body\">\n" +
-                    "<h6>Su nuevo link es <a href='"+html+"' class='link-previews'>"+
+                    "<h6>Su nuevo link es <a href='"+optUrl+"' class='link-previews'>"+
                     html+
                     "</a></h6>"+
                     "<br>"+
                     "<br>"+
-                    "<h6>Puede acceder al siguiente link o escanear el siguiente codigo:</h6> <a href='"+html+"'>Estadisticas</a>"
+                    "<h6>Puede acceder al siguiente link o escanear el siguiente codigo:</h6> <a href='"+optUrl+"'>Estadisticas</a>"
                     +"<div id=\"qrcode\" name=\"qrcode\" style='margin-right: 50px'>"
                     +"</div>"+
                     "<script type=\"text/javascript\">\n" +
-                    "    new QRCode(document.getElementById(\"qrcode\"), html);\n" +
+                    "    new QRCode(document.getElementById(\"qrcode\"), optUrl);\n" +
                     "</"+"script>\"\n" +
                     "       </div>\n"+
                     "    </div>\n" +
