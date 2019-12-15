@@ -65,29 +65,47 @@ public class Filters {
             ByteBuffer byteId = ByteBuffer.wrap(Base64.getDecoder().decode(request.params("idUrl")));
             long idUrl = byteId.getLong();
             Usuario user = request.session().attribute("usuario");
-            if(user!=null) {
-                UrlCorta url = new CrudGenerico<>(UrlCorta.class).encontrar(idUrl);
-                if(url.getCreador()!= null)
-                    if(url.getCreador().getId()!=user.getId())
-                        if (!user.isAdmin())
-                            Spark.halt(403, "<h1>Su usuario no tiene los privilegios necesarios para esta operacion</h1>");
-            }else{
-                List<UrlCorta> tempUrls = request.session().attribute("tempUrls");
-                if(tempUrls!=null){
+            if(ServUrlCorta.getInstance().encontrar(idUrl)==null)
+                Spark.halt(404);
+            else{
+                if(user!=null) {
                     UrlCorta url = new CrudGenerico<>(UrlCorta.class).encontrar(idUrl);
-                    boolean found=false;
-                    for (UrlCorta u: tempUrls) {
-                        if (u.getId()==url.getId()){
-                            found=true;
-                            break;
-                        }
-                    }
-                    if(!found)
-                        Spark.halt(401,"<h1>Usted no está autenticado en el servidor</h1>");
+                    if(url.getCreador()!= null)
+                        if(url.getCreador().getId()!=user.getId())
+                            if (!user.isAdmin())
+                                Spark.halt(403, "<h1>Su usuario no tiene los privilegios necesarios para esta operacion</h1>");
                 }else{
-                    Spark.halt(401,"<h1>Usted no está autenticado en el servidor</h1>");
+                    List<UrlCorta> tempUrls = request.session().attribute("tempUrls");
+                    if(tempUrls!=null){
+                        UrlCorta url = new CrudGenerico<>(UrlCorta.class).encontrar(idUrl);
+                        boolean found=false;
+                        for (UrlCorta u: tempUrls) {
+                            if (u.getId()==url.getId()){
+                                found=true;
+                                break;
+                            }
+                        }
+                        if(!found)
+                            Spark.halt(401,"<h1>Usted no está autenticado en el servidor</h1>");
+                    }else{
+                        Spark.halt(401,"<h1>Usted no está autenticado en el servidor</h1>");
+                    }
                 }
             }
+
+        });
+        Spark.before("/r/:idUrl", (request, response) -> {
+            ByteBuffer byteId = ByteBuffer.wrap(Base64.getDecoder().decode(request.params("idUrl")));
+            long idUrl = byteId.getLong();
+            if(ServUrlCorta.getInstance().encontrar(idUrl)==null)
+                Spark.halt(404);
+
+        });
+        Spark.before("/delUrl/:idUrl", (request, response) -> {
+            ByteBuffer byteId = ByteBuffer.wrap(Base64.getDecoder().decode(request.params("idUrl")));
+            long idUrl = byteId.getLong();
+            if(ServUrlCorta.getInstance().encontrar(idUrl)==null)
+                Spark.halt(404);
         });
     }
 }
