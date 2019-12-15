@@ -177,8 +177,17 @@ public class Routes {
             for (Estadisticas e:ests) {
                 ServEstadistica.getInstance().eliminar(e.getId());
             }
-            UrlCorta url = ServUrlCorta.getInstance().encontrar(idUrl);
+            if(request.session().attribute("usuario")==null){
+                List<UrlCorta> tempUrls = request.session().attribute("tempUrls");
+                UrlCorta url = ServUrlCorta.getInstance().encontrar(idUrl);
+                for(int i=0;i<tempUrls.size();i++)
+                    if(tempUrls.get(i).getId()==idUrl)
+                        tempUrls.remove(i);
+                request.session().attribute("tempUrls",tempUrls);
+            }
             ServUrlCorta.getInstance().eliminar(idUrl);
+
+
             if(request.queryParams("path")=="all")
                 response.redirect("/allUrls");
             else
