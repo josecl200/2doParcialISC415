@@ -42,16 +42,16 @@
                     "   <!-- Card Content - Collapse -->\n" +
                     "       <div class=\"collapse show\" id=\"collapseCardExample\">\n" +
                     "       <div class=\"card-body\">\n" +
-                    "<h6>Su nuevo link es <a href='"+html+"'>"+
+                    "<h6>Su nuevo link es <a href='"+html+"' class='link-previews'>"+
                     html+
                     "</a></h6>"+
                     "<br>"+
                     "<br>"+
-                    "<h6>Si esta registrado y desea revisar las estadisticas de su enlace puede acceder al siguiente link o escanear el siguiente codigo:</h6> <a href='"+optUrl+"'>Estadisticas</a>"
+                    "<h6>Puede acceder al siguiente link o escanear el siguiente codigo:</h6> <a href='"+html+"'>Estadisticas</a>"
                     +"<div id=\"qrcode\" name=\"qrcode\" style='margin-right: 50px'>"
                     +"</div>"+
                     "<script type=\"text/javascript\">\n" +
-                    "    new QRCode(document.getElementById(\"qrcode\"), optUrl);\n" +
+                    "    new QRCode(document.getElementById(\"qrcode\"), html);\n" +
                     "</"+"script>\"\n" +
                     "       </div>\n"+
                     "    </div>\n" +
@@ -65,4 +65,31 @@
     });
 </script>
 
+<!-- Previews -->
 
+<script>
+    crossorigin="anonymous"
+    src="https://polyfill.io/v3/polyfill.min.js?features=fetch">
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/react@16/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@16/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/styled-components@4/dist/styled-components.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@microlink/mql@latest/dist/mql.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@microlink/vanilla@latest/dist/microlink.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function (event) {
+
+        // Example 2
+        // Replace all elements with `link-preview` class
+        // for microlink cards
+        microlink('.link-previews')
+        // Example 3
+        // Replace all elements with `link-preview` class
+        // for microlink cards, passing API specific options
+        //microlink('.link-previews', { size: 'large' })
+    })
+</script>
+
+<!-- Previews -->
