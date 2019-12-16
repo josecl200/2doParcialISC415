@@ -5,6 +5,9 @@ import database.CrudGenerico;
 import database.ServEstadistica;
 import database.ServUrlCorta;
 import database.ServUsuario;
+import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
+import kong.unirest.Unirest;
 import models.UrlCorta;
 import spark.Spark;
 import io.jsonwebtoken.*;
@@ -40,13 +43,20 @@ public class ApiRest {
                 if (token == null || token.isEmpty() || decodeJWT(token)==null) {
                     Spark.halt(401);
                 }
-            });//TODO: probar JWT con login de usuario
+            });
             Spark.afterAfter("/*", (request, response) ->
                     response.header("Content-Type", "application/json")
             );
 
             Spark.get("/urls",(request, response) -> {
-                List<UrlCorta> urls = ServUrlCorta.getInstance().getAllUrls();
+                List<UrlCorta> urls = ServUrlCorta.getInstance().getAllUrls();;
+                for(int i=0;i<urls.size();i++){
+                    String linkPreviewAPI = "https://api.linkpreview.net/?key=5df79533328289b6e0fb52eba76006d3d11ead82fad4d&q=" + urls.get(i).getUrl_orig();
+                    HttpResponse<JsonNode> linkPreviewResult = Unirest.get(linkPreviewAPI).asJson();
+                    String image = linkPreviewResult.getBody().getObject().getString("image");
+                    String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
+                    urls.get(i).setB64img(base64Image);
+                }
                 String urlJsonString = JsonUtilidades.toJson(urls);
                 JsonParser parser = new JsonParser();
                 JsonElement urlElement = parser.parse(urlJsonString);
@@ -68,6 +78,13 @@ public class ApiRest {
             });
             Spark.get("/urls/:usuario",(request, response) -> {
                 List<UrlCorta> urls = ServUrlCorta.getInstance().getURLsByUser(ServUsuario.getInstance().getUser(request.params("usuario")));
+                for(int i=0;i<urls.size();i++){
+                    String linkPreviewAPI = "https://api.linkpreview.net/?key=5df79533328289b6e0fb52eba76006d3d11ead82fad4d&q=" + urls.get(i).getUrl_orig();
+                    HttpResponse<JsonNode> linkPreviewResult = Unirest.get(linkPreviewAPI).asJson();
+                    String image = linkPreviewResult.getBody().getObject().getString("image");
+                    String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
+                    urls.get(i).setB64img(base64Image);
+                }
                 String urlJsonString = JsonUtilidades.toJson(urls);
                 JsonParser parser = new JsonParser();
                 JsonElement urlElement = parser.parse(urlJsonString);
@@ -95,7 +112,11 @@ public class ApiRest {
                 urlnueva.add("creador",parser.parse(JsonUtilidades.toJson(ServUsuario.getInstance().getUser(urlnueva.get("creador").getAsString()))));
                 UrlCorta newUrlObject = new Gson().fromJson(urlnueva,UrlCorta.class);
                 new CrudGenerico<>(UrlCorta.class).crear(newUrlObject);
-
+                String linkPreviewAPI = "https://api.linkpreview.net/?key=5df79533328289b6e0fb52eba76006d3d11ead82fad4d&q=" + newUrlObject.getUrl_orig();
+                HttpResponse<JsonNode> linkPreviewResult = Unirest.get(linkPreviewAPI).asJson();
+                String image = linkPreviewResult.getBody().getObject().getString("image");
+                String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
+                newUrlObject.setB64img(base64Image);
                 return newUrlObject;
             },JsonUtilidades.json());
         });

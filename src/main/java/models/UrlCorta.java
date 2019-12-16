@@ -22,6 +22,9 @@ public class UrlCorta implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
 
+    @Transient
+    private String b64img;
+
     public UrlCorta() {
     }
 
@@ -65,5 +68,13 @@ public class UrlCorta implements Serializable {
 
     public String idAsb64(){
         return Base64.getEncoder().encodeToString(ByteBuffer.allocate(8).putLong(id).array());
+    }
+
+    public String getB64img() {
+        return b64img;
+    }
+
+    public void setB64img(String b64img) {
+        this.b64img = b64img;
     }
 }

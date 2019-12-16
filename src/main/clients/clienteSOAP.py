@@ -7,13 +7,18 @@ client = Client(url=wsdl, location=url)
 
 def listarURLs(username):
     if username:
-        pass
+        lista = client.service.getUserURLS(username)
     else:
         lista = client.service.getAllURLS()
-        for i in lista:
-            for k,v in i:
-                print(k,v)
-            print("-------------")
+    for i in lista:
+        for k,v in i:
+            print(k,v)
+            if k=="id":
+                stats = client.service.getStatsByURL(v)
+                for j in stats:
+                    for key,val in j:
+                        print(key,val)
+        print("-------------")
 
 
 
