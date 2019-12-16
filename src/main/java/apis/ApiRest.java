@@ -49,7 +49,7 @@ public class ApiRest {
             );
 
             Spark.get("/urls",(request, response) -> {
-                List<UrlCorta> urls = ServUrlCorta.getInstance().getAllUrls();;
+                List<UrlCorta> urls = ServUrlCorta.getInstance().getAllUrls();
                 for(int i=0;i<urls.size();i++){
                     String linkPreviewAPI = "https://api.linkpreview.net/?key=5df79533328289b6e0fb52eba76006d3d11ead82fad4d&q=" + urls.get(i).getUrl_orig();
                     HttpResponse<JsonNode> linkPreviewResult = Unirest.get(linkPreviewAPI).asJson();
@@ -70,6 +70,7 @@ public class ApiRest {
                     stats.put("ActPerHour",ServEstadistica.getInstance().getActivityPerHour(idUrl));
                     urlJson.add("urlCorta",parser.parse(JsonUtilidades.toJson("https://short.josecl200.me/r/"+ Base64.getEncoder().encodeToString(ByteBuffer.allocate(8).putLong(idUrl).array()))));
                     urlJson.add("stats",parser.parse(JsonUtilidades.toJson(stats)));
+                    urlJson.add("B64img",parser.parse(JsonUtilidades.toJson(urls.get(i).getB64img())));
                     if(!urlJson.get("creador").isJsonNull())
                         urlJson.add("creador",parser.parse(JsonUtilidades.toJson(ServUrlCorta.getInstance().encontrar(idUrl).getCreador().getUsername())));
                     urlArray.set(i,urlJson);
